@@ -6,7 +6,6 @@
  */
 
 #include <reg52.h>
-#include <string.h>
 #define comm 0
 #define dat 1
 #define uchar unsigned char
