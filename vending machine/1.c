@@ -21,14 +21,15 @@ sbit drawbackled = P3 ^ 2;
 sbit getled = P3 ^ 3;
 
 float price[8] = {3.0, 2.0, 1.5, 5.0, 3.0, 3.5, 5.5, 1.0};
+float paymoney, change;
+
 uchar pricearray[3];
 //用来存放价格转化成的字符串
 uchar drinknamearray[32] = "七喜可乐牛奶锐澳芬达雪碧酸奶白水";
 uchar drinkcode;
 uchar moneykey;
-float paymoney, change;
 uchar num;
-
+//num用在中断里
 uchar drinkkeytmp;
 bit selectedflag, moneyflag;
 
@@ -36,6 +37,7 @@ bit selectedflag, moneyflag;
 
 
 void sprintf1(char *p,float num)
+//将浮点型转换成字符型
 {
 	int a,b;
 	a=(int)(num*10.0)/10+48;
@@ -333,7 +335,7 @@ void main()
 	while (1)
 	{
 	
-		if (drinkkey != 0xff)
+		if (drinkkey != 0xff&&selectedflag==0&&moneyflag==0)
 		{
 			delay_ms(10);
 			if (drinkkey != 0xff)
@@ -399,6 +401,7 @@ void main()
 		moneykey = Keyboard();
 		if (moneykey < 11&&selectedflag==1)
 		{
+			moneyflag = 1;
 			paymoney = 0.5 * (moneykey + 1);
 			sprintf1(pricearray,paymoney);
 			ch_disp_any(3, 6, 3, pricearray);
@@ -406,7 +409,6 @@ void main()
 			speech("实投金额",8);
 			speech(pricearray,4);
 			speech("元",2);
-			moneyflag = 1;
 		}
 		else if (moneykey == 12&&moneyflag==1)
 		{
@@ -416,6 +418,7 @@ void main()
 				ch_disp_any(4, 1, 16, "购物状态: 请取物");
 				speech("请取物",6);
 				selectedflag=0;
+				//先selectflag=0,使得中断里的操作停止执行，再=drinkkeytmp
 				drinkled=drinkkeytmp;
 				for (i = 0; i < 20; i++)
 				{

@@ -307,11 +307,7 @@ void dehydration()
 	ch_disp_any(3, 6, 4, statusarray + status * 4);
 	drainled = 0;
 	waterout = 0;
-	forward = 1;
-	reverse = 0;
-	delaymotorms(4000);
-	forward = 0;
-	reverse = 0;
+	forwardact(4);
 	waterout = 1;
 	drainled = 1;
 	ch_disp_any(3, 6, 4, "    ");
@@ -334,13 +330,17 @@ void main()
 			delayms(10);
 			if (modechose == 0)
 			{
+				while (~modechose)
+				{
+					;
+				}
 				mode++;
-				standardled = economicled = singlewashled = drainmodeled = 1;
 				if (mode > 3)
 				{
 					mode = 0;
 				}
 				ch_disp_any(2, 6, 4, modearray + 4 * mode);
+				standardled = economicled = singlewashled = drainmodeled = 1;
 				switch (mode)
 				{
 				case 0:
@@ -362,10 +362,6 @@ void main()
 				default:
 					break;
 				}
-				while (~modechose)
-				{
-					;
-				}
 			}
 		}
 		if (levelchose == 0 && workflag == 0)
@@ -373,12 +369,16 @@ void main()
 			delayms(10);
 			if (levelchose == 0)
 			{
+				while (~levelchose)
+				{
+					;
+				}
 				waterlevel++;
-				waterhigh = watermid = waterlow = 1;
 				if (waterlevel > 2)
 				{
 					waterlevel = 0;
 				}
+				waterhigh = watermid = waterlow = 1;
 				switch (waterlevel)
 				{
 				case 0:
@@ -395,10 +395,6 @@ void main()
 
 				default:
 					break;
-				}
-				while (~levelchose)
-				{
-					;
 				}
 			}
 		}
