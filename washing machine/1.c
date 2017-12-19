@@ -19,6 +19,7 @@ bit forwardtmp, reversetmp;
 
 uchar workflag = 0;
 
+
 uchar modearray[16] = "标准经济单洗排水";
 uchar statusarray[20] = "进水出水洗涤漂洗脱水";
 
